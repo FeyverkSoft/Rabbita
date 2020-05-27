@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+        source-url: https://nuget.pkg.github.com/FeyverkSoft/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}    
 
     - name: Install dependencies
       run: dotnet restore
@@ -24,5 +27,22 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
       
-    - name: Pack      
-      run: dotnet pack --configuration Release
+
+
+    - name: Pack Core.Rabbita
+      run: |
+        cd Core.Rabbita
+        dotnet pack --configuration Release -o out
+
+    - name: Pack Core.Rabbita.InProc
+      run: |
+        cd Core.Rabbita.InProc
+        dotnet pack --configuration Release -o out  
+
+
+
+    - name: Push Core.Rabbita
+      run: dotnet nuget push ./Core.Rabbita/out/*.nupkg --skip-duplicate --no-symbols false
+
+    - name: Push Core.Rabbita.InProc
+      run: dotnet nuget push ./Core.Rabbita.InProc/out/*.nupkg --skip-duplicate --no-symbols false

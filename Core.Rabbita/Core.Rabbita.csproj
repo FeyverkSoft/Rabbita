@@ -9,6 +9,9 @@
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <RepositoryUrl>
+      https://github.com/FeyverkSoft/Rabbita
+    </RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
