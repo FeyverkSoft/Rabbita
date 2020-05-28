@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Core.Rabbita.Helpers
+namespace Rabbita.Core.Helpers
 {
     internal static class TypeHelper
     {

@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Rabbita.Infrastructure;
 
-namespace Core.Rabbita.InProc
+using Rabbita.Core;
+using Rabbita.Core.Infrastructure;
+
+
+namespace Rabbita.InProc
 {
     internal sealed class InProcCommandBus : ICommandBus
     {
@@ -20,7 +23,8 @@ namespace Core.Rabbita.InProc
 
         public async Task Send(IEnumerable<ICommand> messages)
         {
-            foreach (var message in messages){
+            foreach (var message in messages)
+            {
                 await Queue.EnqueueAsync(message);
             }
         }

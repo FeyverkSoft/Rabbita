@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Rabbita
+namespace Rabbita.Core
 {
     public interface IBus<in T> where T : IMessage
     {

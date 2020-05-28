@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Rabbita.FluentExtensions
+namespace Rabbita.Core.FluentExtensions
 {
     public interface IEventHandlerRegistry
     {

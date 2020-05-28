@@ -6,8 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("Core.Rabbita.InProc")]
-namespace Core.Rabbita.Infrastructure
+[assembly: InternalsVisibleTo("Rabbita.InProc")]
+namespace Rabbita.Core.Infrastructure
 {
     internal sealed class AsyncConcurrentQueue<T> : IReadOnlyCollection<T>
     {

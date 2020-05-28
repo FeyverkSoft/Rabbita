@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Rabbita.Infrastructure;
 
-namespace Core.Rabbita.InProc
+using Rabbita.Core;
+using Rabbita.Core.Infrastructure;
+
+namespace Rabbita.InProc
 {
     internal sealed class InProcEventBus : IEventBus
     {

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Rabbita.FluentExtensions;
-using Core.Rabbita.Infrastructure;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Core.Rabbita.InProc
+using Rabbita.Core;
+using Rabbita.Core.FluentExtensions;
+using Rabbita.Core.Infrastructure;
+
+namespace Rabbita.InProc
 {
     internal sealed class InternalCommandProcessor : BackgroundService
     {

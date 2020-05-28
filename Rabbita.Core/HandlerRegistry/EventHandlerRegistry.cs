@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Rabbita.FluentExtensions;
-using Core.Rabbita.Helpers;
 
-namespace Core.Rabbita.Core
+using Rabbita.Core.FluentExtensions;
+using Rabbita.Core.Helpers;
+
+namespace Rabbita.Core.HandlerRegistry
 {
     public sealed class EventHandlerRegistry : IEventHandlerRegistry
     {

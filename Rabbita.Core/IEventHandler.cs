@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Core.Rabbita
+namespace Rabbita.Core
 {
     public interface IEventHandler { }
 

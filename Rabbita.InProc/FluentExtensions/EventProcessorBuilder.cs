@@ -1,10 +1,13 @@
 ﻿using System;
-using Core.Rabbita.Core;
-using Core.Rabbita.FluentExtensions;
-using Core.Rabbita.Infrastructure;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Rabbita.InProc.FluentExtensions
+using Rabbita.Core;
+using Rabbita.Core.FluentExtensions;
+using Rabbita.Core.HandlerRegistry;
+using Rabbita.Core.Infrastructure;
+
+namespace Rabbita.InProc.FluentExtensions
 {
     public static class EventProcessorBuilder
     {
