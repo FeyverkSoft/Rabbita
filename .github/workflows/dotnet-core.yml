@@ -29,14 +29,14 @@ jobs:
       
 
 
-    - name: Pack Core.Rabbita
+    - name: Pack Rabbita.Core
       run: |
-        cd Core.Rabbita
+        cd Rabbita.Core
         dotnet pack --configuration Release -o out
 
-    - name: Pack Core.Rabbita.InProc
+    - name: Pack Rabbita.InProc
       run: |
-        cd Core.Rabbita.InProc
+        cd Rabbita.InProc
         dotnet pack --configuration Release -o out  
 
 
