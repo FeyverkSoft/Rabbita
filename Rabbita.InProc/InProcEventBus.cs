@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Rabbita.Core;
@@ -17,12 +18,19 @@ namespace Rabbita.InProc
 
         public async Task Send(IEvent message)
         {
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
+
             await Queue.EnqueueAsync(message);
         }
 
         public async Task Send(IEnumerable<IEvent> messages)
         {
-            foreach (var message in messages){
+            if (messages == null)
+                throw new ArgumentNullException(nameof(messages));
+
+            foreach (var message in messages)
+            {
                 await Queue.EnqueueAsync(message);
             }
         }

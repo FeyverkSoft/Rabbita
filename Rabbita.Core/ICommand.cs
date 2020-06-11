@@ -1,4 +1,4 @@
 ﻿namespace Rabbita.Core
 {
-    public interface ICommand: IMessage { }
+    public interface ICommand : IMessage { }
 }
