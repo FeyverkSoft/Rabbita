@@ -13,10 +13,19 @@
     <RepositoryUrl>
       https://github.com/FeyverkSoft/Rabbita
     </RepositoryUrl>
+
+    
+    <dependencies>
+      <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.5" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.5" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
+    </dependencies>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.4" />
+    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.5" />
