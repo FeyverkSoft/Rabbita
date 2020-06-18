@@ -26,7 +26,7 @@ jobs:
       
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      
+     
 
 
     - name: Pack Rabbita.Core
@@ -34,15 +34,13 @@ jobs:
         cd Rabbita.Core
         dotnet pack --configuration Release -o out
 
+    - name: Push Rabbita.Core
+      run: dotnet nuget push ./Rabbita.Core/out/*.nupkg --skip-duplicate --no-symbols false
+
     - name: Pack Rabbita.InProc
       run: |
         cd Rabbita.InProc
         dotnet pack --configuration Release -o out  
-
-
-
-    - name: Push Rabbita.Core
-      run: dotnet nuget push ./Rabbita.Core/out/*.nupkg --skip-duplicate --no-symbols false
 
     - name: Push Rabbita.InProc
       run: dotnet nuget push ./Rabbita.InProc/out/*.nupkg --skip-duplicate --no-symbols false
