@@ -19,39 +19,45 @@ jobs:
         dotnet-version: 3.1.101
         source-url: https://nuget.pkg.github.com/FeyverkSoft/index.json
       env:
-        NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}    
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}  
 
-    - name: Install dependencies 
+    - name: Install dependencies Rabbita.Core
       run: | 
-        cat > nuget.config < EOM
-         <?xml version="1.0" encoding="utf-8"?>
-         <configuration>
-           <packageSources>
-             <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
-             <add key="github" value="https://nuget.pkg.github.com/FeyverkSoft/index.json" />
-           </packageSources>
-           <packageSourceCredentials>
-             <github>
-               <add key="Username" value="FeyverkSoft" />
-               <add key="ClearTextPassword" value="${{ secrets.NUGET_API_KEY }}" />
-             </github>
-           </packageSourceCredentials>
-         </configuration>
+        cd Rabbita.Core
+        cat > nuget.config << EOM
+        <?xml version="1.0" encoding="utf-8"?><configuration>  <packageSources>    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />    <add key="github" value="https://nuget.pkg.github.com/FeyverkSoft/index.json" />  </packageSources>  <packageSourceCredentials>    <github>      <add key="Username" value="FeyverkSoft" />      <add key="ClearTextPassword" value="${{ secrets.NUGET_API_KEY }}" />    </github>  </packageSourceCredentials></configuration>
         EOM
         dotnet restore
       
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build Rabbita.Core
+      run: |
+        cd Rabbita.Core
+        dotnet build  --configuration Release --no-restore
      
-
-
     - name: Pack Rabbita.Core
       run: |
         cd Rabbita.Core
         dotnet pack --configuration Release -o out
 
     - name: Push Rabbita.Core
-      run: dotnet nuget push ./Rabbita.Core/out/*.nupkg --skip-duplicate --no-symbols false
+      run: |
+        cat > nuget.config << EOM
+        <?xml version="1.0" encoding="utf-8"?><configuration>  <packageSources><add key="github" value="https://nuget.pkg.github.com/FeyverkSoft/index.json" />  </packageSources>  <packageSourceCredentials>    <github>      <add key="Username" value="FeyverkSoft" />      <add key="ClearTextPassword" value="${{ secrets.NUGET_API_KEY }}" />    </github>  </packageSourceCredentials></configuration>
+        EOM
+        dotnet nuget push ./Rabbita.Core/out/*.nupkg --skip-duplicate --no-symbols false -s github
+
+    - name: Install dependencies Rabbita.InProc
+      run: | 
+        cd Rabbita.InProc
+        cat > nuget.config << EOM
+        <?xml version="1.0" encoding="utf-8"?><configuration>  <packageSources>    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />    <add key="github" value="https://nuget.pkg.github.com/FeyverkSoft/index.json" />  </packageSources>  <packageSourceCredentials>    <github>      <add key="Username" value="FeyverkSoft" />      <add key="ClearTextPassword" value="${{ secrets.NUGET_API_KEY }}" />    </github>  </packageSourceCredentials></configuration>
+        EOM
+        dotnet restore
+
+    - name: Build Rabbita.InProc
+      run: |
+        cd Rabbita.InProc
+        dotnet build  --configuration Release --no-restore
 
     - name: Pack Rabbita.InProc
       run: |
@@ -59,4 +65,6 @@ jobs:
         dotnet pack --configuration Release -o out  
 
     - name: Push Rabbita.InProc
-      run: dotnet nuget push ./Rabbita.InProc/out/*.nupkg --skip-duplicate --no-symbols false
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}  
+      run: dotnet nuget push ./Rabbita.InProc/out/*.nupkg --skip-duplicate --no-symbols false -s https://nuget.pkg.github.com/FeyverkSoft/index.json
