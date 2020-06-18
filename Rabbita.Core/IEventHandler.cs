@@ -7,6 +7,6 @@ namespace Rabbita.Core
 
     public interface IEventHandler<in T> : IEventHandler where T : notnull, IEvent, IMessage
     {
-        public Task Handle(T message, CancellationToken cancellationToken);
+        public Task Handle(T @event, CancellationToken cancellationToken);
     }
 }

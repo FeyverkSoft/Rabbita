@@ -7,6 +7,6 @@ namespace Rabbita.Core
 
     public interface ICommandHandler<in T> : ICommandHandler where T : notnull, ICommand, IMessage
     {
-        public Task Handle(T message, CancellationToken cancellationToken);
+        public Task Handle(T command, CancellationToken cancellationToken);
     }
 }
