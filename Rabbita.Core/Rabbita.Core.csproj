@@ -5,10 +5,10 @@
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <PackageId>FeyverkSoft.Rabbita</PackageId>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.3.0</AssemblyVersion>
+    <AssemblyVersion>0.0.4.0</AssemblyVersion>
     <RepositoryUrl>
       https://github.com/FeyverkSoft/Rabbita
     </RepositoryUrl>
