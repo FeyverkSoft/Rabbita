@@ -5,20 +5,13 @@
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <PackageId>FeyverkSoft.Rabbita</PackageId>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.5.0</AssemblyVersion>
+    <AssemblyVersion>0.0.6.0</AssemblyVersion>
     <RepositoryUrl>
       https://github.com/FeyverkSoft/Rabbita
     </RepositoryUrl>
-
-    <dependencies>
-      <dependency Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
-      <dependency Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
-      <dependency Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
-      <dependency Include="Newtonsoft.Json" Version="12.0.3" />
-    </dependencies>
   </PropertyGroup>
 
 

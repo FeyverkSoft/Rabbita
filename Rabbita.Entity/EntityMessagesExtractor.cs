@@ -2,26 +2,36 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+
 using Rabbita.Core;
+using Rabbita.Core.MessageSerializer;
 using Rabbita.Entity.Entity;
 
 namespace Rabbita.Entity
 {
     internal sealed class EntityMessagesExtractor : IEntityMessagesExtractor
     {
-         MessageSerializer.Serialize(message);
+        private IMessageSerializer Serializer { get; }
+        public EntityMessagesExtractor(IMessageSerializer serializer)
+        {
+            Serializer = serializer;
+        }
+
         public async IAsyncEnumerable<MessageInfo> Extract(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (entityEntry == null)
                 yield break;
 
-            await foreach (var @event in ExtractEvents(entityEntry, cancellationToken)){
+            await foreach (var @event in ExtractEvents(entityEntry, cancellationToken))
+            {
                 yield return @event;
             }
 
-            await foreach (var command in ExtractCommands(entityEntry, cancellationToken)){
+            await foreach (var command in ExtractCommands(entityEntry, cancellationToken))
+            {
                 yield return command;
             }
         }
@@ -36,17 +46,20 @@ namespace Rabbita.Entity
                 yield break;
 
             var eventMemberName = entityEntry.Metadata.GetAnnotation(RabbitaMagicConst.EventMemberName);
-            
-            if (eventMemberName?.Value != null){
-                var @event = (IEvent) entity.GetType().GetProperty(eventMemberName.Value.ToString()).GetValue(entity);
-                yield return new MessageInfo(Guid.NewGuid(),, 0);
+
+            if (eventMemberName?.Value != null)
+            {
+                var @event = (IEvent)entity.GetType().GetProperty(eventMemberName.Value.ToString()).GetValue(entity);
+                yield return new MessageInfo(Guid.NewGuid(), Serializer.Serialize(@event), 0);
             }
 
             var eventsMemberName = entityEntry.Metadata.GetAnnotation(RabbitaMagicConst.EventsMemberName);
-            if (eventsMemberName?.Value != null){
-                var events = (IEnumerable<IEvent>) entity.GetType().GetProperty(eventsMemberName.Value.ToString()).GetValue(entity);
-                foreach (var @event in events){
-                    yield return new MessageInfo(Guid.NewGuid(),, 0);
+            if (eventsMemberName?.Value != null)
+            {
+                var events = (IEnumerable<IEvent>)entity.GetType().GetProperty(eventsMemberName.Value.ToString()).GetValue(entity);
+                foreach (var @event in events)
+                {
+                    yield return new MessageInfo(Guid.NewGuid(), Serializer.Serialize(@event), 0);
                 }
             }
         }
