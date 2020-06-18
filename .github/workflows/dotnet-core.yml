@@ -22,7 +22,23 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}    
 
     - name: Install dependencies 
-      run: dotnet restore
+      run: | 
+        cat > nuget.config < EOM
+         <?xml version="1.0" encoding="utf-8"?>
+         <configuration>
+           <packageSources>
+             <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+             <add key="github" value="https://nuget.pkg.github.com/FeyverkSoft/index.json" />
+           </packageSources>
+           <packageSourceCredentials>
+             <github>
+               <add key="Username" value="FeyverkSoft" />
+               <add key="ClearTextPassword" value="${{ secrets.NUGET_API_KEY }}" />
+             </github>
+           </packageSourceCredentials>
+         </configuration>
+        EOM
+        dotnet restore
       
     - name: Build
       run: dotnet build --configuration Release --no-restore
