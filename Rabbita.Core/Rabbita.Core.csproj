@@ -8,10 +8,11 @@
     <Version>0.0.6</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.6.0</AssemblyVersion>
-    <RepositoryUrl>
-      https://github.com/FeyverkSoft/Rabbita
-    </RepositoryUrl>
+    <AssemblyVersion>0.0.7.0</AssemblyVersion>
+    <RepositoryUrl>       https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
+    <PackageVersion>0.0.7</PackageVersion>
+    <PackageTags>Event</PackageTags>
+    <FileVersion>0.0.7.0</FileVersion>
   </PropertyGroup>
 
 

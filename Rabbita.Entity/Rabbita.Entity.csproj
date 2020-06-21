@@ -9,17 +9,19 @@
     <Version>0.0.1</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.1.0</AssemblyVersion>
-    <RepositoryUrl>
-      https://github.com/FeyverkSoft/Rabbita
-    </RepositoryUrl>
+    <AssemblyVersion>0.0.2.0</AssemblyVersion>
+    <RepositoryUrl>       https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
+    <PackageVersion>0.0.2</PackageVersion>
+    <FileVersion>0.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.5" />
+    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
