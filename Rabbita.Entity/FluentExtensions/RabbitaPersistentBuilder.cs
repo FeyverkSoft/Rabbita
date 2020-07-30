@@ -20,7 +20,7 @@ namespace Rabbita.Entity.FluentExtensions
 
         public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IEntityMessagesExtractor, IEntityMessagesExtractor>();
+            serviceCollection.AddSingleton<IEntityMessagesExtractor, EntityMessagesExtractor>();
             return serviceCollection;
         }
     }
