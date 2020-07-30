@@ -9,10 +9,10 @@
     <Version>0.0.1</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.2.0</AssemblyVersion>
-    <RepositoryUrl>       https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-    <PackageVersion>0.0.2</PackageVersion>
-    <FileVersion>0.0.2.0</FileVersion>
+    <AssemblyVersion>0.0.3.0</AssemblyVersion>
+    <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
+    <PackageVersion>0.0.3</PackageVersion>
+    <FileVersion>0.0.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
