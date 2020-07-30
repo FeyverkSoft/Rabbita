@@ -64,3 +64,23 @@ jobs:
     - name: Push Rabbita.InProc
       run: |
         dotnet nuget push ./Rabbita.InProc/out/*.nupkg --skip-duplicate --no-symbols false -s github
+        
+    - name: Install dependencies Rabbita.Entity
+      run: | 
+        cd Rabbita.Entity
+        dotnet restore
+
+    - name: Build Rabbita.Entity
+      run: |
+        cd Rabbita.Entity
+        dotnet build  --configuration Release --no-restore
+
+    - name: Pack Rabbita.Entity
+      run: |
+        cd Rabbita.Entity
+        dotnet pack --configuration Release -o out  
+
+    - name: Push Rabbita.Entity
+      run: |
+        dotnet nuget push ./Rabbita.Entity/out/*.nupkg --skip-duplicate --no-symbols false -s github
+        
