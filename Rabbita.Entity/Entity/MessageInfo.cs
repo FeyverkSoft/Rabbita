@@ -41,11 +41,12 @@ namespace Rabbita.Entity.Entity
 
         protected MessageInfo() { }
 
-        public MessageInfo(Guid id, String body, Int32 order = 0)
+        public MessageInfo(Guid id, String messageType, String type, String body, Int32 order = 0)
         {
             Id = id;
             Order = order;
-            Type = body.GetType().FullName;
+            Type = type;
+            MessageType = messageType;
             Body = body;
         }
 

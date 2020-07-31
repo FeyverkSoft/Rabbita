@@ -1,26 +1,27 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Rabbita.Entity.Worker;
 
 namespace Rabbita.Entity.FluentExtensions
 {
     public static class RabbitaPersistentBuilder
     {
-        public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection, Action<RabbitaPersistentOptions> optionsBuilder)
+        public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection,
+            [NotNull] Action<RabbitaPersistentOptions> optionsBuilder)
         {
             var options = new RabbitaPersistentOptions();
             optionsBuilder(options);
 
             if (options.EntityMessagesExtractor == null)
-                serviceCollection.AddRabbitaPersistent();
+                serviceCollection.AddSingleton<IEntityMessagesExtractor, EntityMessagesExtractor>();
             else
                 serviceCollection.AddSingleton<IEntityMessagesExtractor>(options.EntityMessagesExtractor);
 
-            return serviceCollection;
-        }
+            serviceCollection.AddDbContext<WorkerDbContext>(optionsBuilder as Action<DbContextOptionsBuilder>);
+            serviceCollection.AddHostedService<MessagePullingWorker>();
 
-        public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddSingleton<IEntityMessagesExtractor, EntityMessagesExtractor>();
             return serviceCollection;
         }
     }

@@ -5,14 +5,14 @@
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <PackageId>FeyverkSoft.Rabbita</PackageId>
-    <Version>0.0.6</Version>
+    <Version>0.0.8</Version>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.0.7.0</AssemblyVersion>
-    <RepositoryUrl>       https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-    <PackageVersion>0.0.7</PackageVersion>
+    <AssemblyVersion>0.0.8.0</AssemblyVersion>
+    <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
+    <PackageVersion>0.0.8</PackageVersion>
     <PackageTags>Event</PackageTags>
-    <FileVersion>0.0.7.0</FileVersion>
+    <FileVersion>0.0.8.0</FileVersion>
   </PropertyGroup>
 
 
