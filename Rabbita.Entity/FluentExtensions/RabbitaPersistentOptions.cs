@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Rabbita.Entity.FluentExtensions
+﻿namespace Rabbita.Entity.FluentExtensions
 {
-    public sealed class RabbitaPersistentOptions : DbContextOptionsBuilder
+    public sealed class RabbitaPersistentOptions
     {
         public IEntityMessagesExtractor? EntityMessagesExtractor { get; set; }
     }

@@ -6,17 +6,18 @@
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
         <PackageId>FeyverkSoft.Rabbita.Entity</PackageId>
-        <Version>0.0.4</Version>
+        <Version>0.0.6</Version>
         <Authors>FeyverkSoft</Authors>
         <Product>FeyverkSoft</Product>
-        <AssemblyVersion>0.0.4.0</AssemblyVersion>
+        <AssemblyVersion>0.0.6.0</AssemblyVersion>
         <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-        <PackageVersion>0.0.4</PackageVersion>
-        <FileVersion>0.0.4.0</FileVersion>
+        <PackageVersion>0.0.6</PackageVersion>
+        <FileVersion>0.0.6.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.5" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />

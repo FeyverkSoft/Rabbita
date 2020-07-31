@@ -9,7 +9,8 @@ namespace Rabbita.Entity.FluentExtensions
     public static class RabbitaPersistentBuilder
     {
         public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection,
-            [NotNull] Action<RabbitaPersistentOptions> optionsBuilder)
+            [NotNull] Action<RabbitaPersistentOptions> optionsBuilder,
+            [NotNull] Action<DbContextOptionsBuilder> bdBuilder)
         {
             var options = new RabbitaPersistentOptions();
             optionsBuilder(options);
@@ -19,7 +20,7 @@ namespace Rabbita.Entity.FluentExtensions
             else
                 serviceCollection.AddSingleton<IEntityMessagesExtractor>(options.EntityMessagesExtractor);
 
-            serviceCollection.AddDbContext<WorkerDbContext>(optionsBuilder as Action<DbContextOptionsBuilder>);
+            serviceCollection.AddDbContext<WorkerDbContext>(bdBuilder);
             serviceCollection.AddHostedService<MessagePullingWorker>();
 
             return serviceCollection;
