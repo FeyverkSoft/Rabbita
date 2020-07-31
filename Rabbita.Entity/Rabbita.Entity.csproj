@@ -5,7 +5,7 @@
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
-
+        <PackageId>FeyverkSoft.Rabbita.Entity</PackageId>
         <Version>0.0.4</Version>
         <Authors>FeyverkSoft</Authors>
         <Product>FeyverkSoft</Product>

@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <Version>0.0.1</Version>
+    <PackageId>FeyverkSoft.Rabbita.Entity.MariaDbTarget</PackageId>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
