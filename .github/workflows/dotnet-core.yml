@@ -84,3 +84,21 @@ jobs:
       run: |
         dotnet nuget push ./Rabbita.Entity/out/*.nupkg --skip-duplicate --no-symbols false -s github
         
+    - name: Install dependencies Rabbita.Entity.MariaDbTarget
+      run: | 
+        cd Rabbita.Entity.MariaDbTarget
+        dotnet restore
+
+    - name: Build Rabbita.Entity.MariaDbTarget
+      run: |
+        cd Rabbita.Entity.MariaDbTarget
+        dotnet build  --configuration Release --no-restore
+
+    - name: Pack Rabbita.Entity.MariaDbTarget
+      run: |
+        cd Rabbita.Entity.MariaDbTarget
+        dotnet pack --configuration Release -o out  
+
+    - name: Push Rabbita.Entity.MariaDbTarget
+      run: |
+        dotnet nuget push ./Rabbita.Entity.MariaDbTarget/out/*.nupkg --skip-duplicate --no-symbols false -s github
