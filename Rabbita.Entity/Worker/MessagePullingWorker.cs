@@ -36,27 +36,28 @@ namespace Rabbita.Entity.Worker
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             await Task.Yield();
-            await using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetService<WorkerDbContext>();
-            var query = dbContext.Messages.Where(_ => !_.IsSent);
-
-            if (_eventBus == null)
-                query = query.Where(_ => _.MessageType != MessageType.Event);
-            if (_commandBus == null)
-                query = query.Where(_ => _.MessageType != MessageType.Command);
-
-            query = query.OrderBy(_ => _.Order);
 
             while (!cancellationToken.IsCancellationRequested){
+                await using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetService<WorkerDbContext>();
+                var query = dbContext.Messages.Where(_ => !_.IsSent);
+
+                if (_eventBus == null)
+                    query = query.Where(_ => _.MessageType != MessageType.Event);
+                if (_commandBus == null)
+                    query = query.Where(_ => _.MessageType != MessageType.Command);
+
+                query = query.OrderBy(_ => _.Order);
+
                 try{
                     var count = await query.CountAsync(cancellationToken);
                     if (count == 0){
-                        await Task.Delay(millisecondsDelay: 500, cancellationToken: cancellationToken);
+                        await Task.Delay(millisecondsDelay: 850, cancellationToken: cancellationToken);
                         continue;
                     }
 
                     var num = (Int32) (Math.Log(count, 2) * 5);
 
-                    foreach (var messageInfo in query.Take((5 * num) + 1).ToList()){
+                    foreach (var messageInfo in query.Take((5 * num) + 1)){
                         switch (messageInfo.MessageType){
                             case MessageType.Event:
                                 if (messageInfo.Body != null){
@@ -74,13 +75,17 @@ namespace Rabbita.Entity.Worker
                                 messageInfo.MarkAsSent();
                                 break;
                         }
+
+                        if (dbContext.Entry(messageInfo).State == EntityState.Unchanged)
+                            dbContext.Attach(messageInfo);
                     }
 
                     await dbContext.SaveChangesAsync(cancellationToken);
 
                     if (num >= 100)
                         num = 98;
-                    await Task.Delay(millisecondsDelay: 100 - num, cancellationToken: cancellationToken);
+
+                    await Task.Delay(millisecondsDelay: 150 - (Int32) Math.Log(count, 2) * 2, cancellationToken: cancellationToken);
                 }
                 catch (Exception ex){
                     _logger.LogError(ex.Message, ex);
