@@ -9,10 +9,10 @@
         <Version>0.0.6</Version>
         <Authors>FeyverkSoft</Authors>
         <Product>FeyverkSoft</Product>
-        <AssemblyVersion>0.0.7.0</AssemblyVersion>
+        <AssemblyVersion>0.0.8.0</AssemblyVersion>
         <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-        <PackageVersion>0.0.7</PackageVersion>
-        <FileVersion>0.0.7.0</FileVersion>
+        <PackageVersion>0.0.8</PackageVersion>
+        <FileVersion>0.0.8.0</FileVersion>
         <Title>Rabbita.EF Integration </Title>
         <PackageProjectUrl>https://github.com/FeyverkSoft/Rabbita</PackageProjectUrl>
     </PropertyGroup>

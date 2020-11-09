@@ -58,7 +58,9 @@ namespace Rabbita.InProc
                         _logger.LogError(e, e.Message);
                     }
 
-                    await Task.Delay(1, cancellationToken);
+                    if (_queue.Count == 0) { 
+                        await Task.Delay(100, cancellationToken);
+                    }
                 }
             }
             catch (TaskCanceledException){ }

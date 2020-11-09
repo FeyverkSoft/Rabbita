@@ -51,7 +51,7 @@ namespace Rabbita.Entity.Worker
                 try{
                     var count = await query.CountAsync(cancellationToken);
                     if (count == 0){
-                        await Task.Delay(millisecondsDelay: 850, cancellationToken: cancellationToken);
+                        await Task.Delay(millisecondsDelay: 1500, cancellationToken: cancellationToken);
                         continue;
                     }
 
