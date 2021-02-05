@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -13,7 +14,7 @@ namespace Rabbita.Core.Helpers
         /// <param name="handler"></param>
         /// <param name="genericHandler"></param>
         /// <returns></returns>
-        internal static List<Type> GetGenericInterfaces(this Type handler, Type genericHandler)
+        internal static List<Type> GetGenericInterfaces([NotNull] this Type handler, [NotNull] Type genericHandler)
         {
             return handler.GetTypeInfo()
                 .ImplementedInterfaces

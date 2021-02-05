@@ -9,7 +9,7 @@ namespace Rabbita.Core.HandlerRegistry
 {
     public sealed class CommandHandlerRegistry : ICommandHandlerRegistry
     {
-        private readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> _handlers = new();
         public IEnumerable<Type> RegisteredHandlers => _handlers.Values;
 
         public ICommandHandlerRegistry Register<T>() where T : ICommandHandler

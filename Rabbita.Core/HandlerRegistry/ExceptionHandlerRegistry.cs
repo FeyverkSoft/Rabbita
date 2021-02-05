@@ -9,7 +9,7 @@ namespace Rabbita.Core.HandlerRegistry
 {
     public sealed class ExceptionHandlerRegistry : IExceptionHandlerRegistry
     {
-        private readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> _handlers = new();
         public IEnumerable<Type> RegisteredHandlers => _handlers.Values;
 
         public IExceptionHandlerRegistry Register<T>() where T : IExceptionHandler

@@ -24,7 +24,7 @@ namespace Rabbita.Entity
                                           $"Service {nameof(IEntityMessagesExtractor)} wasn't registered in service collections; Please use AddRabbitaPersistent");
         }
 
-        public override async Task<Int32> SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<Int32> SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken = new())
         {
             var ce = ChangeTracker.Entries()
                 .Where(_ => _.State == EntityState.Added || _.State == EntityState.Modified);
@@ -43,7 +43,7 @@ namespace Rabbita.Entity
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        public override async Task<Int32> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<Int32> SaveChangesAsync(CancellationToken cancellationToken = new())
         {
             return await SaveChangesAsync(true, cancellationToken);
         }
