@@ -1,89 +1,118 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Rabbita.InProc;
+
+using System.Linq;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Rabbita.Core;
-using Rabbita.Core.FluentExtensions;
-using Rabbita.Core.Infrastructure;
 
-namespace Rabbita.InProc
+using Core.Command;
+using Core.Infrastructure;
+using Core.Message;
+
+using FluentExtensions.Command;
+
+internal sealed class InternalCommandProcessor : BackgroundService
 {
-    internal sealed class InternalCommandProcessor : BackgroundService
+    private readonly AsyncConcurrentQueue<ICommand> _queue;
+    private readonly ICommandHandlerRegistry _dispatchers;
+    private readonly IServiceProvider _provider;
+    private readonly ILogger _logger;
+
+    public InternalCommandProcessor(
+        AsyncConcurrentQueue<ICommand> queue,
+        IServiceProvider provider,
+        ICommandHandlerRegistry dispatchers,
+        ILogger<InternalCommandProcessor> logger)
     {
-        private readonly AsyncConcurrentQueue<ICommand> _queue;
-        private readonly ICommandHandlerRegistry _dispatchers;
-        private readonly IExceptionHandlerRegistry? _exceptionHandlerRegistry;
-        private readonly IServiceProvider _provider;
-        private readonly ILogger _logger;
+        _queue = queue;
+        _dispatchers = dispatchers;
+        _provider = provider;
+        _logger = logger;
+    }
 
-        public InternalCommandProcessor(
-            AsyncConcurrentQueue<ICommand> queue,
-            IServiceProvider provider,
-            ICommandHandlerRegistry dispatchers,
-            ILogger<InternalEventProcessor> logger,
-            IExceptionHandlerRegistry? exceptionHandlerRegistry = null)
+    private async void ListenCommand(CancellationToken cancellationToken)
+    {
+        await Task.Yield();
+        // пока что так, а не для каждой обработки свой скоуп, так  будет производительнее. Но есть и недостатки.
+        using var scope = _provider.CreateScope();
+        try
         {
-            _queue = queue;
-            _dispatchers = dispatchers;
-            _provider = provider;
-            _logger = logger;
-            _exceptionHandlerRegistry = exceptionHandlerRegistry;
-        }
-
-        private async void ListenCommand(CancellationToken cancellationToken)
-        {
-            await Task.Yield();
-            using var scope = _provider.CreateScope();
-            try{
-                while (!cancellationToken.IsCancellationRequested){
-                    try{
-                        if (_queue.Count > 0){
-                            var message = await _queue.DequeueAsync(cancellationToken);
-                            var processor = scope.ServiceProvider.GetService(_dispatchers.GetHandlerFor(message));
-                            var method = processor.GetType().GetMethod(nameof(IEventHandler<IEvent>.Handle));
-                            ThreadPool.QueueUserWorkItem(async state =>
-                            {
-                                try{
-                                    await (Task) method.Invoke(processor, new Object[] {message, cancellationToken});
-                                }
-                                catch (Exception e){
-                                    await ProcessException(processor?.ToString(), message, e, cancellationToken);
-                                }
-                            });
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    if (_queue.Count > 0)
+                    {
+                        var message = await _queue.DequeueAsync(cancellationToken);
+                        var (processorType, config) = _dispatchers.GetHandlerFor(message);
+                        var processor = scope.ServiceProvider.GetService(processorType);
+                        var method = processor.GetType().GetMethod(nameof(ICommandHandler<ICommand>.HandleAsync));
+                        /* Это будет работать только для общего Scope на все вызовы
+                         Однако если захочу сделать using var scope = _provider.CreateScope(); внутри цикла, то в пролёте
+                        if(!_methodInfoDict.TryGetValue(processor, out var method))
+                        {
+                            method = processor.GetType().GetMethod(nameof(ICommandHandler<ICommand>.HandleAsync));
+                            _methodInfoDict.Add(processor, method);
                         }
-                    }
-                    catch (InvalidOperationException e){
-                        _logger.LogError(e, e.Message);
-                    }
-
-                    if (_queue.Count == 0) { 
-                        await Task.Delay(100, cancellationToken);
+                        */
+                        ThreadPool.QueueUserWorkItem(async state =>
+                        {
+                            try
+                            {
+                                await (Task)method.Invoke(processor, new Object[] { message, cancellationToken });
+                            }
+                            catch (Exception e)
+                            {
+                                await ProcessException(processorType, config, message, e, cancellationToken);
+                            }
+                        });
                     }
                 }
+                catch (InvalidOperationException e)
+                {
+                    _logger.LogError(e, e.Message);
+                }
+
+                if (_queue.Count == 0)
+                {
+                    await Task.Delay(100, cancellationToken);
+                }
             }
-            catch (TaskCanceledException){ }
         }
-
-        private async Task ProcessException(String? processorName, IMessage message, Exception ex, CancellationToken cancellationToken)
+        catch (TaskCanceledException)
         {
-            var handler = _exceptionHandlerRegistry?.GetHandlerFor(ex);
-            if (handler == null){
-                _logger.LogError(ex, $"ExceptionHandler not found for: {processorName}: {ex.Message};");
-                return;
-            }
-
-            using var scope = _provider.CreateScope();
-            var processor = scope.ServiceProvider.GetService(handler);
-            var method = processor.GetType().GetMethod(nameof(IExceptionHandler<Exception>.Handle));
-            await (Task) method.Invoke(processor, new Object[] {message, ex, cancellationToken});
+            //nothing
         }
+    }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+
+    private async Task ProcessException(Type processorType, ICommandConsumerConfig config, IMessage message, Exception ex, CancellationToken cancellationToken)
+    {
+        var (handler, matchExceptionType) = config.GetExceptionHandlerFor(ex);
+        if (handler is null || matchExceptionType is null)
         {
-            ListenCommand(stoppingToken);
-            return Task.CompletedTask;
+            _logger.LogError(ex, $"ExceptionHandler not found for exception {ex.GetType()}: {processorType.Name}: {ex.Message};");
+            return;
         }
+
+        using var scope = _provider.CreateScope();
+        var processor = scope.ServiceProvider.GetService(handler);
+        var method = processor?.GetType().GetMethods()
+            .Where(m => m.Name.Equals(nameof(IExceptionHandler<Exception>.ExceptionHandleAsync)))
+            .SingleOrDefault(m => m.GetParameters()[1].ParameterType.FullName.Equals(matchExceptionType));
+        if (processor is null || method is null)
+        {
+            _logger.LogError(ex, $"ExceptionHandler not found for exception {ex.GetType()}: {processorType.Name}: {ex.Message};");
+            return;
+        }
+
+        await (Task)method.Invoke(processor, new Object[] { message, ex, cancellationToken });
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        ListenCommand(stoppingToken);
+        return Task.CompletedTask;
     }
 }

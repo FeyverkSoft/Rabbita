@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace Rabbita.InProc;
 
-using Rabbita.Core;
-using Rabbita.Core.Infrastructure;
+using Core.Event;
 
-namespace Rabbita.InProc
+internal sealed class InProcEventBus : IEventBus
 {
-    internal sealed class InProcEventBus : IEventBus
+    private AsyncConcurrentQueue<IEvent> Queue { get; }
+
+    public InProcEventBus(AsyncConcurrentQueue<IEvent> queue)
     {
-        private AsyncConcurrentQueue<IEvent> Queue { get; }
+        Queue = queue;
+    }
 
-        public InProcEventBus(AsyncConcurrentQueue<IEvent> queue)
+    public async Task SendAsync(IEvent message)
+    {
+        if (message == null)
+            throw new ArgumentNullException(nameof(message));
+
+        await Queue.EnqueueAsync(message);
+    }
+
+    public async Task SendAsync(IEnumerable<IEvent> messages)
+    {
+        if (messages == null)
+            throw new ArgumentNullException(nameof(messages));
+
+        foreach (var message in messages)
         {
-            Queue = queue;
-        }
-
-        public async Task Send(IEvent message)
-        {
-            if (message == null)
-                throw new ArgumentNullException(nameof(message));
-
             await Queue.EnqueueAsync(message);
-        }
-
-        public async Task Send(IEnumerable<IEvent> messages)
-        {
-            if (messages == null)
-                throw new ArgumentNullException(nameof(messages));
-
-            foreach (var message in messages)
-            {
-                await Queue.EnqueueAsync(message);
-            }
         }
     }
 }

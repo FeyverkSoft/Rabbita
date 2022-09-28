@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Rabbita.Core.MessageSerializer;
+
 using System.Diagnostics.CodeAnalysis;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Message;
 
-namespace Rabbita.Core.MessageSerializer
+/// <summary>
+/// Базовый интерфес сериализаторо и десериалитора сообщений
+/// </summary>
+public interface IMessageSerializer
 {
-    /// <summary>
-    /// Базовый интерфес сериализаторо и десериалитора сообщений
-    /// </summary>
-    public interface IMessageSerializer
-    {
-        String Serialize([NotNull] in IMessage message);
+    String Serialize([NotNull] in IMessage message);
 
-        T? Deserialize<T>([NotNull] in String @object) where T : IMessage;
-    }
+    T? Deserialize<T>([NotNull] in String @object) where T : IMessage;
 }

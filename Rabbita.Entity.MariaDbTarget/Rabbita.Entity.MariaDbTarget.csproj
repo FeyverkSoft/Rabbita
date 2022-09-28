@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>9</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <Version>0.1.5</Version>
@@ -11,12 +11,18 @@
     <Product>FeyverkSoft</Product>
     <AssemblyVersion>0.1.5.0</AssemblyVersion>
     <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-    <PackageVersion>0.1.5</PackageVersion>
+    <PackageVersion>0.2.0</PackageVersion>
     <FileVersion>0.1.5.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Copyright>FeyverkSoft</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FeyverkSoft.Rabbita.Entity" Version="0.0.6" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rabbita.Entity\Rabbita.Entity.csproj" />
   </ItemGroup>
 </Project>

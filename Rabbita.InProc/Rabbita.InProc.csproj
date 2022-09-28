@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>default</LangVersion>
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <PackageId>FeyverkSoft.Rabbita.InProc</PackageId>
@@ -13,25 +13,20 @@
     <Product>FeyverkSoft</Product>
     <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
     <PackageProjectUrl>https://github.com/FeyverkSoft/Rabbita</PackageProjectUrl>
-    <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.11" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+  <ItemGroup>
+    <ProjectReference Include="..\Rabbita.Core\Rabbita.Core.csproj" />
   </ItemGroup>
 
 </Project>

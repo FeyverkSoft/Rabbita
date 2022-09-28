@@ -1,29 +1,27 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace Rabbita.Entity.FluentExtensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Rabbita.Entity.Worker;
 
-namespace Rabbita.Entity.FluentExtensions
+using Worker;
+
+public static class RabbitaPersistentBuilder
 {
-    public static class RabbitaPersistentBuilder
+    public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection,
+        [NotNull] Action<RabbitaPersistentOptions> optionsBuilder,
+        [NotNull] Action<DbContextOptionsBuilder> bdBuilder)
     {
-        public static IServiceCollection AddRabbitaPersistent(this IServiceCollection serviceCollection,
-            [NotNull] Action<RabbitaPersistentOptions> optionsBuilder,
-            [NotNull] Action<DbContextOptionsBuilder> bdBuilder)
-        {
-            var options = new RabbitaPersistentOptions();
-            optionsBuilder(options);
+        var options = new RabbitaPersistentOptions();
+        optionsBuilder(options);
 
-            if (options.EntityMessagesExtractor == null)
-                serviceCollection.AddSingleton<IEntityMessagesExtractor, EntityMessagesExtractor>();
-            else
-                serviceCollection.AddSingleton<IEntityMessagesExtractor>(options.EntityMessagesExtractor);
+        if (options.EntityMessagesExtractor == null)
+            serviceCollection.AddSingleton<IEntityMessagesExtractor, EntityMessagesExtractor>();
+        else
+            serviceCollection.AddSingleton<IEntityMessagesExtractor>(options.EntityMessagesExtractor);
 
-            serviceCollection.AddDbContext<WorkerDbContext>(bdBuilder);
-            serviceCollection.AddHostedService<MessagePullingWorker>();
+        serviceCollection.AddDbContext<WorkerDbContext>(bdBuilder);
+        serviceCollection.AddHostedService<MessagePullingWorker>();
 
-            return serviceCollection;
-        }
+        return serviceCollection;
     }
 }

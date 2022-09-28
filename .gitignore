@@ -252,3 +252,4 @@ logs/
 # Idea
 .idea/
 /Client/docker/
+/.sonarqube

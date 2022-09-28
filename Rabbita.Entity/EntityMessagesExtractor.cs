@@ -1,100 +1,125 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading;
+﻿namespace Rabbita.Entity;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Rabbita.Core;
-using Rabbita.Core.Message;
-using Rabbita.Core.MessageSerializer;
-using Rabbita.Entity.Entity;
 
-namespace Rabbita.Entity
+using Core.Event;
+using Core.Message;
+using Core.MessageSerializer;
+using Core.Command;
+
+using Entity;
+
+public sealed class EntityMessagesExtractor : IEntityMessagesExtractor
 {
-    public sealed class EntityMessagesExtractor : IEntityMessagesExtractor
+    private IMessageSerializer Serializer { get; }
+
+    public EntityMessagesExtractor(IMessageSerializer serializer)
     {
-        private IMessageSerializer Serializer { get; }
+        Serializer = serializer;
+    }
 
-        public EntityMessagesExtractor(IMessageSerializer serializer)
+    public async IAsyncEnumerable<MessageInfo> Extract(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        if (entityEntry == null)
+            yield break;
+
+        await foreach (var extractEvent in ExtractEvents(entityEntry, cancellationToken))
         {
-            Serializer = serializer;
+            yield return extractEvent;
         }
 
-        public async IAsyncEnumerable<MessageInfo> Extract(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        await foreach (var extractCommand in ExtractCommands(entityEntry, cancellationToken))
         {
-            if (entityEntry == null)
-                yield break;
+            yield return extractCommand;
+        }
+    }
 
-            await foreach (var extractEvent in ExtractEvents(entityEntry, cancellationToken)){
-                yield return extractEvent;
-            }
+    private async IAsyncEnumerable<MessageInfo> ExtractEvents(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        if (entityEntry is null)
+            yield break;
 
-            await foreach (var extractCommand in ExtractCommands(entityEntry, cancellationToken)){
-                yield return extractCommand;
-            }
+        var entity = entityEntry.Entity;
+        if (entity is null)
+            yield break;
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var eventMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.EventMemberName);
+
+        if (eventMemberName?.Value != null)
+        {
+            var @event = (IEvent)entity.GetType().GetProperty(eventMemberName.Value.ToString()).GetValue(entity);
+            yield return new MessageInfo(
+                id: Guid.NewGuid(),
+                messageType: MessageType.Event,
+                type: GetType(@event),
+                body: Serializer.Serialize(@event),
+                order: 0);
         }
 
-        private async IAsyncEnumerable<MessageInfo> ExtractEvents(EntityEntry? entityEntry,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        var eventsMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.EventsMemberName);
+        if (eventsMemberName?.Value == null)
+            yield break;
+
+        var events = (IEnumerable<IEvent>)entity.GetType().GetProperty(eventsMemberName.Value.ToString()).GetValue(entity);
+        var order = 0;
+        foreach (var @event in events)
         {
-            if (entityEntry == null)
-                yield break;
+            yield return new MessageInfo(
+                id: Guid.NewGuid(),
+                messageType: MessageType.Event,
+                type: GetType(@event),
+                body: Serializer.Serialize(@event),
+                order: order++);
+        }
+    }
 
-            var entity = entityEntry.Entity;
-            if (entity == null)
-                yield break;
+    private async IAsyncEnumerable<MessageInfo> ExtractCommands(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        if (entityEntry is null)
+            yield break;
 
-            var eventMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.EventMemberName);
+        var entity = entityEntry.Entity;
+        if (entity is null)
+            yield break;
 
-            if (eventMemberName?.Value != null){
-                var @event = (IEvent) entity.GetType().GetProperty(eventMemberName.Value.ToString()).GetValue(entity);
-                yield return new MessageInfo(Guid.NewGuid(), MessageType.Event, GetType(@event), Serializer.Serialize(@event), 0);
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            var eventsMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.EventsMemberName);
-            if (eventsMemberName?.Value == null)
-                yield break;
+        var commandMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.CommandMemberName);
 
-            var events = (IEnumerable<IEvent>) entity.GetType().GetProperty(eventsMemberName.Value.ToString()).GetValue(entity);
-            var order = 0;
-            foreach (var @event in events){
-                yield return new MessageInfo(Guid.NewGuid(), MessageType.Event, GetType(@event), Serializer.Serialize(@event), order++);
-            }
+        if (commandMemberName?.Value != null)
+        {
+            var command = (IEvent)entity.GetType().GetProperty(commandMemberName.Value.ToString())?.GetValue(entity);
+            yield return new MessageInfo(
+                id: Guid.NewGuid(),
+                messageType: MessageType.Command,
+                type: GetType(command),
+                body: Serializer.Serialize(command),
+                order: 0);
         }
 
-        private async IAsyncEnumerable<MessageInfo> ExtractCommands(EntityEntry? entityEntry,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        var commandsMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.CommandsMemberName);
+        if (commandsMemberName?.Value is null)
+            yield break;
+
+        if (entity.GetType().GetProperty(commandsMemberName.Value.ToString())?.GetValue(entity) is not IEnumerable<ICommand> commands)
+            yield break;
+
+        var order = 0;
+        foreach (var command in commands)
         {
-            if (entityEntry == null)
-                yield break;
-
-            var entity = entityEntry.Entity;
-            if (entity == null)
-                yield break;
-
-            var commandMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.CommandMemberName);
-
-            if (commandMemberName?.Value != null){
-                var command = (IEvent) entity.GetType().GetProperty(commandMemberName.Value.ToString()).GetValue(entity);
-                yield return new MessageInfo(Guid.NewGuid(), MessageType.Command, GetType(command), Serializer.Serialize(command), 0);
-            }
-
-            var commandsMemberName = entityEntry.Metadata.FindAnnotation(RabbitaMagicConst.CommandsMemberName);
-            if (commandsMemberName?.Value == null)
-                yield break;
-
-            var commands = (IEnumerable<ICommand>) entity.GetType().GetProperty(commandsMemberName.Value.ToString()).GetValue(entity);
-            var order = 0;
-            foreach (var command in commands){
-                yield return new MessageInfo(Guid.NewGuid(), MessageType.Command, GetType(command), Serializer.Serialize(command), order++);
-            }
+            yield return new MessageInfo(
+                id: Guid.NewGuid(),
+                messageType: MessageType.Command,
+                type: GetType(command),
+                body: Serializer.Serialize(command),
+                order: order++);
         }
+    }
 
-        private String GetType(IMessage message)
-        {
-            var attr = (MessageNameAttribute?) message.GetType().GetCustomAttributes().SingleOrDefault(_ => _ is MessageNameAttribute);
-            return attr?.MessageName ?? message.GetType().Name;
-        }
+    private String GetType(IMessage message)
+    {
+        return message.GetType().Name;
     }
 }

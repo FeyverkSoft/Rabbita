@@ -1,7 +1,6 @@
-﻿namespace Rabbita.Entity.Migration
+﻿namespace Rabbita.Entity.Migration;
+
+public interface IDbMigrationService
 {
-    public interface IDbMigrationService
-    {
-        public void Initialize();
-    }
+    public void Initialize();
 }

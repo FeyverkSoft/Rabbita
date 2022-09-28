@@ -1,34 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>default</LangVersion>
     <OutputType>Library</OutputType>
     <Version>0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <PackageVersion>0.0.0</PackageVersion>
+    <PackageVersion>0.0.1</PackageVersion>
     <FileVersion>0.0.0.0</FileVersion>
     <PackageId>FeyverkSoft.Rabbita.Mq</PackageId>
-    <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
     <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
     <PackageProjectUrl>https://github.com/FeyverkSoft/Rabbita</PackageProjectUrl>
+    <Nullable>enable</Nullable>
+    <TargetFramework>net6.0</TargetFramework>
+    <Copyright>FeyverkSoft</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-  <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
-  </ItemGroup>
   
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup>
     <Folder Include="FluentExtensions\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Rabbita.Core\Rabbita.Core.csproj" />
+    <ProjectReference Include="..\Rabbita.Mq.Abstraction\Rabbita.Mq.Abstraction.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
   </ItemGroup>
 
 </Project>

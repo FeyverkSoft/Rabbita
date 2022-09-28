@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
+﻿namespace Rabbita.Entity;
 
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-using Rabbita.Entity.Entity;
+using Entity;
 
-namespace Rabbita.Entity
+public interface IEntityMessagesExtractor
 {
-    public interface IEntityMessagesExtractor
-    {
-        IAsyncEnumerable<MessageInfo> Extract(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default);
-    }
+    IAsyncEnumerable<MessageInfo> Extract(EntityEntry? entityEntry, [EnumeratorCancellation] CancellationToken cancellationToken = default);
 }

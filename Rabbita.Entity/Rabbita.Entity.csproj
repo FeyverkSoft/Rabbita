@@ -1,41 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>9</LangVersion>
+        <LangVersion>default</LangVersion>
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
         <PackageId>FeyverkSoft.Rabbita.Entity</PackageId>
         <Version>0.0.9</Version>
-        <AssemblyVersion>0.0.9.0</AssemblyVersion>
-        <PackageVersion>0.0.9</PackageVersion>
-        <FileVersion>0.0.9.0</FileVersion>
+        <AssemblyVersion>0.0.10.0</AssemblyVersion>
+        <PackageVersion>0.0.10</PackageVersion>
+        <FileVersion>0.0.10.0</FileVersion>
         <Authors>FeyverkSoft</Authors>
         <Product>FeyverkSoft</Product>
         <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
         <PackageProjectUrl>https://github.com/FeyverkSoft/Rabbita</PackageProjectUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Title>Rabbita.EF Integration </Title>
-        <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Copyright>FeyverkSoft</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.11" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.11" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.2" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <ItemGroup>
+      <ProjectReference Include="..\Rabbita.Core\Rabbita.Core.csproj" />
     </ItemGroup>
     
     <!--

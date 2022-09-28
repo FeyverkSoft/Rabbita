@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <LangVersion>default</LangVersion>
+        <OutputType>Library</OutputType>
+        <Version>0.0.0</Version>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <PackageVersion>0.0.1</PackageVersion>
+        <FileVersion>0.0.0.0</FileVersion>
+        <PackageId>FeyverkSoft.Rabbita.Mq.Abstraction</PackageId>
+        <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/FeyverkSoft/Rabbita</PackageProjectUrl>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Copyright>FeyverkSoft</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Rabbita.Core\Rabbita.Core.csproj" />
+    </ItemGroup>
+
+</Project>

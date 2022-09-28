@@ -1,7 +1,6 @@
-﻿namespace Rabbita.Entity.FluentExtensions
+﻿namespace Rabbita.Entity.FluentExtensions;
+
+public sealed class RabbitaPersistentOptions
 {
-    public sealed class RabbitaPersistentOptions
-    {
-        public IEntityMessagesExtractor? EntityMessagesExtractor { get; set; }
-    }
+    public IEntityMessagesExtractor? EntityMessagesExtractor { get; set; }
 }

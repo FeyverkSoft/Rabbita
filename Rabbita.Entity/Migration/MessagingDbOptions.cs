@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Rabbita.Entity.Migration;
 
-namespace Rabbita.Entity.Migration
+public sealed class MessagingDbOptions
 {
-    public sealed class MessagingDbOptions
-    {
-        public String ConnectionString { get; set; }
+    public String ConnectionString { get; set; }
 
-        public Int32 DbCommandTimeout { get; set; }
-    }
+    public Int32 DbCommandTimeout { get; set; }
 }
