@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 
-[assembly: InternalsVisibleTo("Rabbita.InProc")]
-
 namespace Rabbita.Core.Infrastructure;
 
 internal sealed class AsyncConcurrentQueue<T> : IReadOnlyCollection<T>

@@ -9,7 +9,7 @@ using Message;
 /// </summary>
 public interface IMessageSerializer
 {
-    String Serialize([NotNull] in IMessage message);
+    String Serialize<T>([NotNull] in T message) where T : IMessage;
 
     T? Deserialize<T>([NotNull] in String @object) where T : IMessage;
 }

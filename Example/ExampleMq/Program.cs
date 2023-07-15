@@ -13,6 +13,8 @@ using Rabbita.Mq.FluentExtensions;
 
 namespace Example
 {
+    using Rabbita.Mq.FluentExtensions.Event;
+
     class Program
     {
         static void Main(string[] args)
@@ -116,8 +118,8 @@ namespace Example
                             iOpt.FromQueue("test_message1");
                         })
                         .AddSerializer(new JsonMessageSerializer())
-                        .AddExceptionHandler<ExceptionHandler>()
-                        .SetConsumerCount(4);
+                        .AddExceptionHandler<Exception, ExceptionHandler>()
+                        .SetConsumerPrefetchCount(4);
                 });
 
             return serviceCollection.BuildServiceProvider();

@@ -1,0 +1,22 @@
+version: '3.6'
+
+networks: 
+  backend-network:
+
+services:
+  rabbit-mq:
+    image: rabbitmq:3.9-management
+    ports:
+       - "15672:15672"
+       - "5672:5672"
+       - "5671:5671"
+#    volumes:
+#      - ./rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+#    environment:
+    networks:
+      - backend-network
+    restart: always
+
+volumes:
+  rabbit-data:
+    driver: local

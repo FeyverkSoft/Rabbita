@@ -10,3 +10,6 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Reflection;
+
+[assembly: InternalsVisibleTo("Rabbita.InProc")]
+[assembly: InternalsVisibleTo("Rabbita.Mq")]

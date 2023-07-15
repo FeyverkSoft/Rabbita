@@ -20,7 +20,7 @@ public static class RabbitaPersistentBuilder
             serviceCollection.AddSingleton<IEntityMessagesExtractor>(options.EntityMessagesExtractor);
 
         serviceCollection.AddDbContext<WorkerDbContext>(bdBuilder);
-        serviceCollection.AddHostedService<MessagePullingWorker>();
+        //serviceCollection.AddHostedService<MessagePullingWorker>();
 
         return serviceCollection;
     }

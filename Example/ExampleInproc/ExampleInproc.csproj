@@ -18,8 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Rabbita.Core\Rabbita.Core.csproj" />
-        <ProjectReference Include="..\Rabbita.InProc\Rabbita.InProc.csproj" />
+        <ProjectReference Include="..\..\Rabbita.Core\Rabbita.Core.csproj" />
+        <ProjectReference Include="..\..\Rabbita.InProc\Rabbita.InProc.csproj" />
     </ItemGroup>
 
 </Project>

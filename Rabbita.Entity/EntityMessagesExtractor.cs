@@ -120,6 +120,6 @@ public sealed class EntityMessagesExtractor : IEntityMessagesExtractor
 
     private String GetType(IMessage message)
     {
-        return message.GetType().Name;
+        return message.GetType().FullName;
     }
 }

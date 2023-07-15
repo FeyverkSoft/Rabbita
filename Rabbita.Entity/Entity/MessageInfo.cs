@@ -42,7 +42,7 @@ public sealed class MessageInfo
     /// </summary>
     [StringLength(4096)]
     [DataMember]
-    public String Body { get; private set; }
+    public String? Body { get; private set; }
 
     /// <summary>
     /// Заголовки сообщения

@@ -9,6 +9,8 @@ using Rabbita.Entity.Entity;
 
 namespace Rabbita.Entity.Worker;
 
+using System.Reflection;
+
 internal sealed class MessagePullingWorker : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
@@ -57,7 +59,8 @@ internal sealed class MessagePullingWorker : BackgroundService
                 foreach (var messageInfo in query.Take((5 * num) + 1)){
                     switch (messageInfo.MessageType){
                         case MessageType.Event:
-                            if (messageInfo.Body is not null){
+                            if (messageInfo.Body is not null)
+                            {
                                 await _eventBus?.SendAsync(_serializer.Deserialize<IEvent>(messageInfo.Body));
                             }
 

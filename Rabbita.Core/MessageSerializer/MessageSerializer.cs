@@ -1,39 +1,33 @@
 ﻿namespace Rabbita.Core.MessageSerializer;
 
 using System.Diagnostics.CodeAnalysis;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Message;
 
 public sealed class JsonMessageSerializer : IMessageSerializer
 {
-    public String Serialize([NotNull] in IMessage message)
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    public JsonMessageSerializer()
     {
-        return JsonConvert.SerializeObject(message, new JsonSerializerSettings
+        _jsonSerializerOptions = new JsonSerializerOptions
         {
-            Converters = new List<JsonConverter>
-            {
-                new StringEnumConverter(),
-                new IsoDateTimeConverter(),
-            },
-            NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.Objects
-        });
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = false,
+        };
+
+        _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    }
+
+    public String Serialize<T>([NotNull] in T message) where T : IMessage
+    {
+        return JsonSerializer.Serialize((object)message, _jsonSerializerOptions);
     }
 
     public T? Deserialize<T>([NotNull] in String @object) where T : IMessage
     {
-        return JsonConvert.DeserializeObject<T>(@object, new JsonSerializerSettings
-        {
-            Converters = new List<JsonConverter>
-            {
-                new StringEnumConverter(),
-                new IsoDateTimeConverter(),
-            },
-            NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.Objects
-        });
+        return JsonSerializer.Deserialize<T>(@object, _jsonSerializerOptions);
     }
 }

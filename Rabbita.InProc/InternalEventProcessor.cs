@@ -57,7 +57,7 @@ internal sealed class InternalEventProcessor : BackgroundService
                                 }
                                 catch (Exception e)
                                 {
-                                    await ProcessException(processorType, config, message, e, cancellationToken);
+                                    await ExceptionSuppressor.ExceptionSuppress(() => ProcessException(processorType, config, message, e, cancellationToken), _logger);
                                 }
                             });
                         }

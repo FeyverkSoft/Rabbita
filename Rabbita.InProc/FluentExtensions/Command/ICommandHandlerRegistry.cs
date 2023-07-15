@@ -2,10 +2,9 @@
 
 using Core.Command;
 
-public interface ICommandHandlerRegistry
+public interface ICommandHandlerRegistry:IBaseCommandHandlerRegistry
 {
     ICommandConsumerConfigBuilder<T> Register<T>() where T : ICommandHandler;
-    (Type Handler, ICommandConsumerConfig Config) GetHandlerFor(ICommand @command);
 }
 
 public interface ICommandConsumerConfigBuilder<T> where T : ICommandHandler

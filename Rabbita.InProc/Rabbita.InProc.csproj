@@ -5,10 +5,10 @@
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <PackageId>FeyverkSoft.Rabbita.InProc</PackageId>
-    <Version>0.0.9</Version>
-    <AssemblyVersion>0.0.9.0</AssemblyVersion>
-    <PackageVersion>0.0.9</PackageVersion>
-    <FileVersion>0.0.9.0</FileVersion>
+    <Version>0.2.17</Version>
+    <AssemblyVersion>0.2.17.0</AssemblyVersion>
+    <PackageVersion>0.2.17</PackageVersion>
+    <FileVersion>0.2.17.0</FileVersion>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
     <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
