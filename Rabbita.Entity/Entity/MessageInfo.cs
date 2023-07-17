@@ -40,7 +40,7 @@ public sealed class MessageInfo
     /// <summary>
     /// Тело к отправке
     /// </summary>
-    [StringLength(4096)]
+    [StringLength(10240)]
     [DataMember]
     public String? Body { get; private set; }
 

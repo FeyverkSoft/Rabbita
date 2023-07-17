@@ -1,13 +1,14 @@
 ﻿namespace Rabbita.Core.MessageSerializer;
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Message;
 
 public sealed class JsonMessageSerializer : IMessageSerializer
-{
+{                                                                                                                              
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public JsonMessageSerializer()
@@ -17,7 +18,7 @@ public sealed class JsonMessageSerializer : IMessageSerializer
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = false,
         };
-
+        _jsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 

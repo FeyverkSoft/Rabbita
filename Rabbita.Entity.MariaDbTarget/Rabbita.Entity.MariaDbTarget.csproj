@@ -5,14 +5,14 @@
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
-    <Version>0.2.17.0</Version>
+    <Version>0.2.18.0</Version>
     <PackageId>FeyverkSoft.Rabbita.Entity.MariaDbTarget</PackageId>
     <Authors>FeyverkSoft</Authors>
     <Product>FeyverkSoft</Product>
-    <AssemblyVersion>0.2.17.0</AssemblyVersion>
+    <AssemblyVersion>0.2.18.0</AssemblyVersion>
     <RepositoryUrl>https://github.com/FeyverkSoft/Rabbita</RepositoryUrl>
-    <PackageVersion>0.2.17</PackageVersion>
-    <FileVersion>0.2.17.0</FileVersion>
+    <PackageVersion>0.2.18</PackageVersion>
+    <FileVersion>0.2.18.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Copyright>FeyverkSoft</Copyright>

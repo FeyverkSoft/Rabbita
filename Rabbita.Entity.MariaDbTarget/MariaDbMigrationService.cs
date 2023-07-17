@@ -17,7 +17,7 @@ internal sealed class MariaDbMigrationService : IDbMigrationService
   `UpdateDate` datetime DEFAULT NULL,
   `Order` int(11) NOT NULL,
   `Type` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
-  `Body` varchar(4096) COLLATE utf8_unicode_ci NOT NULL,
+  `Body` varchar(10240) COLLATE utf8_unicode_ci NOT NULL,
   `MessageType` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `Headers` varchar(4096) COLLATE utf8_unicode_ci NOT NULL,
   `IsSent` bit NOT NULL DEFAULT 0,
